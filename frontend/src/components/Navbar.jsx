@@ -4,32 +4,34 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
     return ( 
         <div>
-            <section class="w-full px-8 text-gray-700 bg-white">
-                <div class="container flex flex-col flex-wrap items-center justify-between py-5 mx-auto md:flex-row max-w-7xl">
-                    <div class="relative flex flex-col md:flex-row">
-                        <a href="#_" class="flex items-center mb-5 font-medium text-gray-900 lg:w-auto lg:items-center lg:justify-center md:mb-0">
-                            <span class="mx-auto text-xl font-black leading-none text-gray-900 select-none">Supreme Bank<span class="text-indigo-600">.</span></span>
-                        </a>
-                        <nav class="flex flex-wrap items-center mb-5 text-base md:mb-0 md:pl-8 md:ml-8 md:border-l md:border-gray-200">
-                            <Link to="/" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">Home</Link>
-                            <Link to="/dashboard" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">Dashboard</Link>
-                            <Link to="/history" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">History</Link>
-                        </nav>
+            <header className="sticky top-0 z-50 bg-white  shadow-md">
+                <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                        <img
+                        src="https://images.unsplash.com/photo-1598520106830-8c45c2035460"
+                        alt="Supreme Banking"
+                        className="h-10 w-auto"
+                        />
+                        <h1 className="text-xl font-bold">Supreme Banking</h1>
                     </div>
 
-                    <div class="inline-flex items-center ml-5 space-x-6 lg:justify-end">
-                        <Link to="/about" class="text-base font-medium leading-6 text-gray-600 whitespace-no-wrap transition duration-150 ease-in-out hover:text-gray-900">
-                            About
+                    <nav className="hidden md:flex items-center space-x-6">
+                        <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400">Home</Link>
+                        <Link to="/dashboard" className="hover:text-blue-600 dark:hover:text-blue-400">Dasboard</Link>
+                        <Link to="transaction" className="hover:text-blue-600 dark:hover:text-blue-400">Transaction</Link>
+                        <Link to="/about" className="hover:text-blue-600 dark:hover:text-blue-400">About</Link>
+                    </nav>
+
+                    <div className="flex items-center space-x-4">
+                        <Link to="/signin" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Login
                         </Link>
-                        <Link to="/signin" class="text-base font-medium leading-6 text-gray-600 whitespace-no-wrap transition duration-150 ease-in-out hover:text-gray-900">
-                            Sign in
-                        </Link>
-                        <Link to="/signup" class="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-                            Sign up
+                        <Link to="/signup" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                        Sign Up
                         </Link>
                     </div>
                 </div>
-            </section>
+            </header>
         </div>
      );
 }
