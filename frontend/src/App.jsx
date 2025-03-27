@@ -6,24 +6,30 @@ import Transaction from './pages/Transaction'
 import Signin from "./pages/Signin"
 import Signup from "./pages/Signup"
 import About from './pages/About'
+import { UserProvider } from './context/UserContext'
+import { AccountProvider } from './context/AccountContext'
 
 function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route>
-          <Route  path='/' element={<Layout/>}>
-            <Route index element={<Home/>}/>
-            <Route path='dashboard' element={<Dashboard/>}/>
-            <Route path='transaction' element={<Transaction/>}/>
-            <Route path='signin' element={<Signin/>}/>
-            <Route path='signup' element={<Signup/>}/>
-            <Route path='about' element={<About/>}/>
-          
-          </Route>
-        </Route>
-      </Routes>
+      <UserProvider>
+        <AccountProvider>
+          <Routes>
+            <Route>
+              <Route  path='/' element={<Layout/>}>
+                <Route index element={<Home/>}/>
+                <Route path='dashboard' element={<Dashboard/>}/>
+                <Route path='transaction' element={<Transaction/>}/>
+                <Route path='signin' element={<Signin/>}/>
+                <Route path='signup' element={<Signup/>}/>
+                <Route path='about' element={<About/>}/>
+              
+              </Route>
+            </Route>
+          </Routes>
+        </AccountProvider>
+      </UserProvider>
     </BrowserRouter>
   )
 }

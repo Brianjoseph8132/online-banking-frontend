@@ -1,48 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaWallet, FaArrowUp, FaArrowDown, FaChartLine, FaShieldAlt, FaClock } from "react-icons/fa";
 import { format } from "date-fns";
+import { AccountContext } from "../context/AccountContext";
 
 const Dashboard = () => {
-  const [balance, setBalance] = useState(25789.45);
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      date: new Date(2024, 0, 15),
-      description: "Salary Deposit",
-      type: "credit",
-      amount: 5000.00
-    },
-    {
-      id: 2,
-      date: new Date(2024, 0, 14),
-      description: "Grocery Shopping",
-      type: "debit",
-      amount: -156.78
-    },
-    {
-      id: 3,
-      date: new Date(2024, 0, 13),
-      description: "Online Transfer",
-      type: "credit",
-      amount: 1000.00
-    },
-    {
-      id: 4,
-      date: new Date(2024, 0, 12),
-      description: "Utility Bill",
-      type: "debit",
-      amount: -245.90
-    }
-  ]);
+
+  const {balance, transactions} = useContext(AccountContext)
+
+  
 
   const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" });
   const [isLoading, setIsLoading] = useState(false);
 
-  const metrics = {
-    deposits: transactions.reduce((acc, curr) => curr.amount > 0 ? acc + curr.amount : acc, 0),
-    withdrawals: Math.abs(transactions.reduce((acc, curr) => curr.amount < 0 ? acc + curr.amount : acc, 0)),
-    monthlySpending: Math.abs(transactions.reduce((acc, curr) => curr.amount < 0 ? acc + curr.amount : acc, 0))
-  };
 
   const handleSort = (key) => {
     setSortConfig({
@@ -54,13 +23,14 @@ const Dashboard = () => {
   const sortedTransactions = [...transactions].sort((a, b) => {
     if (sortConfig.key === "date") {
       return sortConfig.direction === "asc" 
-        ? a.date.getTime() - b.date.getTime()
-        : b.date.getTime() - a.date.getTime();
+        ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+        : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
     }
     return sortConfig.direction === "asc" 
       ? a[sortConfig.key] - b[sortConfig.key]
       : b[sortConfig.key] - a[sortConfig.key];
   });
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
@@ -70,23 +40,23 @@ const Dashboard = () => {
           <div className="md:col-span-8 bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-800">Account Overview</h2>
-              <div className="flex items-center space-x-2 text-sm text-gray-500">
-                <FaClock />
-                <span>Last updated: {format(new Date(), "PP")}</span>
-              </div>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 mb-2">Total Balance</p>
-                <h1 className={`text-4xl font-bold ${balance >= 0 ? "text-green-600" : "text-red-600"}`}>
-                  ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                </h1>
+                {balance !== null && balance !== undefined ? (
+                  <h1 className={`text-4xl font-bold ${balance >= 0 ? "text-green-600" : "text-red-600"}`}>
+                    ${balance.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </h1>
+                ) : (
+                  <p>Loading balance...</p>
+                )}
               </div>
               <FaShieldAlt className="text-4xl text-blue-500" />
             </div>
           </div>
 
-          {/* Quick Metrics */}
+          {/* Quick Metrics
           <div className="md:col-span-4 grid grid-cols-1 gap-4">
             <div className="bg-white rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -117,7 +87,7 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Transaction History */}
           <div className="md:col-span-12 bg-white rounded-xl shadow-lg p-6">
@@ -137,7 +107,6 @@ const Dashboard = () => {
                       >
                         Date
                       </th>
-                      <th className="py-3 px-4 text-left">Description</th>
                       <th className="py-3 px-4 text-left">Type</th>
                       <th 
                         className="py-3 px-4 text-right cursor-pointer hover:bg-gray-50"
@@ -153,8 +122,7 @@ const Dashboard = () => {
                         key={transaction.id}
                         className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-blue-50 transition-colors duration-150 ease-in-out cursor-pointer`}
                       >
-                        <td className="py-3 px-4">{format(transaction.date, "PP")}</td>
-                        <td className="py-3 px-4">{transaction.description}</td>
+                        <td className="py-3 px-4">{format(transaction.timestamp, "PP")}</td>
                         <td className="py-3 px-4 capitalize">{transaction.type}</td>
                         <td className={`py-3 px-4 text-right ${transaction.amount >= 0 ? "text-green-600" : "text-red-600"} font-medium`}>
                           ${Math.abs(transaction.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
