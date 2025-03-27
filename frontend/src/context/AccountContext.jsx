@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { toast } from "react-toastify";
 
 
 
@@ -28,7 +29,7 @@ export const AccountProvider = ({children}) => {
         .then((response) => {
             setBalance(response.balance);
         });
-    }, []);
+    }, [onChange]);
 
 
 
@@ -47,6 +48,71 @@ export const AccountProvider = ({children}) => {
         });
     }, []);
 
+    // =========Transaction=========
+
+    const addTransactions = (amount, action) => {
+        toast.loading("Transacting...");
+        fetch("http://127.0.0.1:5000/transaction",{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+                amount, action
+            }),
+        })
+        .then((resp) => resp.json())
+        .then((response) =>{
+            console.log(response);
+
+            if (response.message) {
+                toast.dismiss();
+                toast.message(response.message);
+                setOnChange(!onchange)
+            } else if (response.error){
+                toast.dismiss();
+                toast.error(response.error)
+            }else {
+                toast.dismiss();
+                toast.error("Failed to add")
+            }
+        })
+
+    }
+
+    // ===========Create Account=====
+    const createAccount = (initial_deposit) => {
+        toast.loading("Creating Account...");
+        fetch("http://127.0.0.1:5000/create_account",{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({
+                initial_deposit
+            }),
+        })
+        .then((resp) => resp.json())
+        .then((response) =>{
+            console.log(response);
+
+            if (response.message) {
+                toast.dismiss();
+                toast.message(response.message);
+                setOnChange(!onchange)
+            } else if (response.error){
+                toast.dismiss();
+                toast.error(response.error)
+            }else {
+                toast.dismiss();
+                toast.error("Failed to create")
+            }
+        })
+
+    }
+
 
 
 
@@ -56,7 +122,11 @@ export const AccountProvider = ({children}) => {
 
     const data = {
         balance,
-        transactions
+        transactions,
+
+        addTransactions,
+
+        createAccount
     };
 
 

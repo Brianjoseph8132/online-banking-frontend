@@ -92,7 +92,7 @@ export const UserProvider = ({ children }) => {
         toast.dismiss();
         toast.success("Successfully logged out")
 
-        navigate("/login")
+        navigate("/signin")
         }
 
       })

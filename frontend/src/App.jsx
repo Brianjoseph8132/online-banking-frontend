@@ -8,6 +8,7 @@ import Signup from "./pages/Signup"
 import About from './pages/About'
 import { UserProvider } from './context/UserContext'
 import { AccountProvider } from './context/AccountContext'
+import Create from './pages/Create'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path='signin' element={<Signin/>}/>
                 <Route path='signup' element={<Signup/>}/>
                 <Route path='about' element={<About/>}/>
+                <Route path='create' element={<Create/>}/>
               
               </Route>
             </Route>
