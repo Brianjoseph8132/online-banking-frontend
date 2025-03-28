@@ -15,6 +15,7 @@ export const AccountProvider = ({children}) => {
     const [balance, setBalance] = useState(0)
     const [transactions, setTransactions] = useState([]);
     const [onChange, setOnChange] = useState(true);
+    const [hasAccount, setHasAccount] = useState(null);
 
     // =============Dashboard==============
     useEffect(() => {
@@ -114,6 +115,24 @@ export const AccountProvider = ({children}) => {
     }
 
 
+    // ==========Check if the current user if has an account=======
+    useEffect(() => {
+        fetch('http://127.0.0.1:5000/has_account', {
+            method: "GET",
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${authToken}`,
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            setHasAccount(response.has_account);
+        });
+    }, []);
+
+
+
+
 
 
 
@@ -123,6 +142,7 @@ export const AccountProvider = ({children}) => {
     const data = {
         balance,
         transactions,
+        hasAccount,
 
         addTransactions,
 
