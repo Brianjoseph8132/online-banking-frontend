@@ -36,7 +36,7 @@ const Create = () => {
                         <div className="mb-4">
                             <label for="card-number" className="block text-sm font-medium text-gray-700">Amount</label>
                             <input
-                            type="text"
+                            type="number"
                             id="amount"
                             name="amount"
                             value={initialDeposit}

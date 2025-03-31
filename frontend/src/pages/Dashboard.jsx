@@ -56,38 +56,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Quick Metrics
-          <div className="md:col-span-4 grid grid-cols-1 gap-4">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <FaArrowUp className="text-green-500" />
-                  <h3 className="text-gray-700">Total Deposits</h3>
-                </div>
-                <span className="text-lg font-semibold text-green-600">
-                  ${metrics.deposits.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <FaArrowDown className="text-red-500" />
-                  <h3 className="text-gray-700">Total Withdrawals</h3>
-                </div>
-                <span className="text-lg font-semibold text-red-600">
-                  ${metrics.withdrawals.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <FaChartLine className="text-blue-500" />
-                  <h3 className="text-gray-700">Monthly Spending</h3>
-                </div>
-                <span className="text-lg font-semibold text-blue-600">
-                  ${metrics.monthlySpending.toLocaleString()}
-                </span>
-              </div>
-            </div>
-          </div> */}
 
           {/* Transaction History */}
           <div className="md:col-span-12 bg-white rounded-xl shadow-lg p-6">

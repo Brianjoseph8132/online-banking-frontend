@@ -61,12 +61,12 @@ const Transaction = () => {
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Amount</label>
                                 <input
-                                type="text"
+                                type="number"
                                 id="amount"
                                 name="amount"
                                 value={amount}
                                 onChange={(e) =>setAmount(e.target.value)}
-                                placeholder="1234 5678 9012 3456"
+                                placeholder="Amount"
                                 className="mt-1 block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                 required
                                 />
