@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AccountContext } from "../context/AccountContext";
-import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -10,18 +10,20 @@ const Create = () => {
 
 
     const [initialDeposit, setInitialDeposit] = useState('');
+    const [pin, setPin] = useState('')
 
-    const navigate = useNavigate();
+    
 
     const handleSubmit = (e) => {
         (e).preventDefault();
 
         
-        createAccount(initialDeposit); 
+        createAccount(initialDeposit, pin); 
 
       // Reset form fields
       setInitialDeposit('');
-      navigate("/dashboard")
+      setPin('')
+     
     }
 
 
@@ -33,6 +35,21 @@ const Create = () => {
                     <form 
                       onSubmit={handleSubmit}
                       >
+
+                        <div className="mb-4">
+                            <label for="card-number" className="block text-sm font-medium text-gray-700">Pin</label>
+                            <input
+                            type="number"
+                            id="pin"
+                            name="pin"
+                            value={pin}
+                            onChange={(e) => setPin(e.target.value)}
+                            placeholder="Enter Pin"
+                            className="mt-1 block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                            required
+                            />
+                        </div>
+
                         <div className="mb-4">
                             <label for="card-number" className="block text-sm font-medium text-gray-700">Amount</label>
                             <input

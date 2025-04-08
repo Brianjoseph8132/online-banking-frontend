@@ -20,16 +20,18 @@ const Dashboard = () => {
     });
   };
 
-  const sortedTransactions = [...transactions].sort((a, b) => {
-    if (sortConfig.key === "date") {
+  const sortedTransactions = Array.isArray(transactions)
+  ? [...transactions].sort((a, b) => {
+      if (sortConfig.key === "date") {
+        return sortConfig.direction === "asc" 
+          ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+          : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+      }
       return sortConfig.direction === "asc" 
-        ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-        : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    }
-    return sortConfig.direction === "asc" 
-      ? a[sortConfig.key] - b[sortConfig.key]
-      : b[sortConfig.key] - a[sortConfig.key];
-  });
+        ? a[sortConfig.key] - b[sortConfig.key]
+        : b[sortConfig.key] - a[sortConfig.key];
+    })
+  : [];
   
 
   return (

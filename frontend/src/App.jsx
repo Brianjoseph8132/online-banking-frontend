@@ -10,6 +10,7 @@ import { UserProvider } from './context/UserContext'
 import { AccountProvider } from './context/AccountContext'
 import Create from './pages/Create'
 
+
 function App() {
 
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path='signup' element={<Signup/>}/>
                 <Route path='about' element={<About/>}/>
                 <Route path='create' element={<Create/>}/>
+                
               
               </Route>
             </Route>

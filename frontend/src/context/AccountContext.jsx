@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,7 +9,9 @@ export const AccountContext = createContext();
 
 
 export const AccountProvider = ({children}) => {
+
     const navigate = useNavigate();
+
     const { authToken } = useContext(UserContext);
 
     const [balance, setBalance] = useState(0)
@@ -45,13 +47,18 @@ export const AccountProvider = ({children}) => {
         })
         .then((response) => response.json())
         .then((response) => {
-            setTransactions(response.transactions);
-        });
+            if (Array.isArray(response.transactions)) {
+                setTransactions(response.transactions);
+            } else {
+                setTransactions([]); // fallback to an empty array
+                console.warn("No transactions found or invalid response:", response);
+            }
+        });        
     }, []);
 
     // =========Transaction=========
 
-    const addTransactions = (amount, action) => {
+    const addTransactions = (amount, action,pin) => {
         toast.loading("Transacting...");
         fetch("http://127.0.0.1:5000/transaction",{
             method: "POST",
@@ -60,17 +67,17 @@ export const AccountProvider = ({children}) => {
                 Authorization: `Bearer ${authToken}`,
             },
             body: JSON.stringify({
-                amount, action
+                amount, action, pin
             }),
         })
         .then((resp) => resp.json())
         .then((response) =>{
             console.log(response);
 
-            if (response.message) {
+            if (response.success) {
                 toast.dismiss();
-                toast.message(response.message);
-                setOnChange(!onchange)
+                toast.success(response.success);
+                navigate("/dashboard");
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -83,7 +90,7 @@ export const AccountProvider = ({children}) => {
     }
 
     // ===========Create Account=====
-    const createAccount = (initial_deposit) => {
+    const createAccount = (initial_deposit,pin) => {
         toast.loading("Creating Account...");
         fetch("http://127.0.0.1:5000/create_account",{
             method: "POST",
@@ -92,17 +99,17 @@ export const AccountProvider = ({children}) => {
                 Authorization: `Bearer ${authToken}`,
             },
             body: JSON.stringify({
-                initial_deposit
+                initial_deposit, pin
             }),
         })
         .then((resp) => resp.json())
         .then((response) =>{
             console.log(response);
 
-            if (response.message) {
+            if (response.success) {
                 toast.dismiss();
-                toast.message(response.message);
-                setOnChange(!onchange)
+                toast.success(response.success);
+                navigate("/dashboard");
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -129,12 +136,6 @@ export const AccountProvider = ({children}) => {
             setHasAccount(response.has_account);
         });
     }, []);
-
-
-
-
-
-
 
 
 

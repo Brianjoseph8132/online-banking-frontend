@@ -231,8 +231,6 @@ export const UserProvider = ({ children }) => {
     });
   };
 
-  
-  
 
   const data = {
     authToken,

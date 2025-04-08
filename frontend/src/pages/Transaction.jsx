@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AccountContext } from "../context/AccountContext";
 import { UserContext } from "../context/UserContext";
-import { useNavigate } from "react-router-dom";
+
 
 
 const Transaction = () => {
@@ -11,20 +11,22 @@ const Transaction = () => {
 
     const [amount, setAmount] = useState('');
     const [action, setAction] = useState('');
+    const [pin, setPin] = useState('');
 
-    const navigate = useNavigate();
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
         
           // Enter your details
-          await addTransactions(amount, action)
+          await addTransactions(amount, action, pin)
     
           // Reset form fields
           setAmount('');
           setAction('');
-          navigate("/dashboard")
+          setPin('')
+        
     
       };
 
@@ -71,6 +73,20 @@ const Transaction = () => {
                                 required
                                 />
                             </div>
+                            <div className="mb-4">
+                                <label for="cardholder-name" className="block text-sm font-medium text-gray-700">Pin</label>
+                                <input
+                                type="number"
+                                id="pin"
+                                value={pin}
+                                onChange={(e) => setPin(e.target.value)}
+                                name="pin"
+                                placeholder="Enter your pin"
+                                className="mt-1 block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                required
+                                />
+                            </div>
+
                             <div>
                                 <button
                                 type="submit"
