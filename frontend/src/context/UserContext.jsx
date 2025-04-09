@@ -63,6 +63,52 @@ export const UserProvider = ({ children }) => {
       });
   };
 
+   // LOGIN WITH GOOGLE
+   const login_with_google = (email) => {
+    toast.loading("Logging you in ... ");
+    fetch("http://127.0.0.1:5000/login_with_google", {
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            email
+        })
+    })
+    .then((resp) => resp.json())
+    .then((response) => {
+        if (response.access_token) {
+            toast.dismiss();
+            sessionStorage.setItem("token", response.access_token);
+            setAuthToken(response.access_token);
+
+            fetch('http://127.0.0.1:5000/current_user', {
+                method: "GET",
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${response.access_token}`
+                }
+            })
+            .then((response) => response.json())
+            .then((response) => {
+                if (response.email) {
+                    setCurrentUser(response);
+                }
+            });
+
+            toast.success("Successfully Logged in");
+            navigate("/");
+        } else if (response.error) {
+            toast.dismiss();
+            toast.error(response.error);
+        } else {
+            toast.dismiss();
+            toast.error("Email is incorrect");
+        }
+    });
+};
+
+
   // const logout =  () => {
   //   sessionStorage.removeItem("token");
   //   setAuthToken(null);
@@ -235,6 +281,7 @@ export const UserProvider = ({ children }) => {
   const data = {
     authToken,
     login,
+    login_with_google,
     current_user,
     logout,
     addUser,
